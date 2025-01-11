@@ -15,6 +15,8 @@ import Login from "./components/Login";
 import Projects from "./pages/Projects";
 import { Workspaces } from "@mui/icons-material";
 import ProjectDetail from "./pages/ProjectDetail";
+import Departments from "./pages/workspace/Departments";
+import Users from "./pages/workspace/Users";
 
 // Updated Navigation with links
 const NAVIGATION = [
@@ -42,21 +44,21 @@ const NAVIGATION = [
     title: "Analytics",
   },
   {
-    segment: "reports",
-    title: "Reports",
+    segment: "workspace",
+    title: "Workspace (AOT Workspace)",
     icon: <BarChartIcon />,
     children: [
       {
-        segment: "sales",
-        title: "Sales",
+        segment: "departments",
+        title: "Departments",
         icon: <DescriptionIcon />,
-        link: "/reports/sales",
+        link: "/workspace/departments",
       },
       {
-        segment: "traffic",
-        title: "Traffic",
+        segment: "users",
+        title: "Users",
         icon: <DescriptionIcon />,
-        link: "/reports/traffic",
+        link: "/workspace/users",
       },
     ],
   },
@@ -167,8 +169,8 @@ export default function App(props) {
               <Routes>
                 <Route path="/dashboard" element={<DashboardPage />} />
                 <Route path="/projects" element={<Projects />} />
-                <Route path="/reports/sales" element={<SalesPage />} />
-                <Route path="/reports/traffic" element={<TrafficPage />} />
+                <Route path="/workspace/departments" element={<Departments />} />
+                <Route path="/workspace/users" element={<Users />} />
                 <Route path="/videocall" element={<VideoCall />} />
                 <Route
                   path="/project/:projectName"
