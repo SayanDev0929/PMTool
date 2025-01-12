@@ -10,12 +10,15 @@ import {
   DialogContent,
   DialogTitle,
   TextField,
-  Grid,
+  Select,
+  MenuItem,
+  InputLabel,
+  FormControl,
 } from "@mui/material";
 import { Work, Build, Construction, Folder } from "@mui/icons-material"; // Example icons
 import { useNavigate } from "react-router-dom";
 
-// Sample project data
+// Sample project data with team members
 const initialProjects = [
   {
     name: "Project A",
@@ -23,6 +26,10 @@ const initialProjects = [
     description: "Description A",
     links: "Link A",
     goals: "Goal A",
+    teamMembers: [
+      { name: "Alice", role: "Developer" },
+      { name: "Bob", role: "Tester" },
+    ],
   },
   {
     name: "Project B",
@@ -30,6 +37,10 @@ const initialProjects = [
     description: "Description B",
     links: "Link B",
     goals: "Goal B",
+    teamMembers: [
+      { name: "Charlie", role: "UI Designer" },
+      { name: "David", role: "Developer" },
+    ],
   },
   {
     name: "Project C",
@@ -37,6 +48,10 @@ const initialProjects = [
     description: "Description C",
     links: "Link C",
     goals: "Goal C",
+    teamMembers: [
+      { name: "Eve", role: "Developer" },
+      { name: "Frank", role: "Tester" },
+    ],
   },
   {
     name: "Project D",
@@ -44,6 +59,10 @@ const initialProjects = [
     description: "Description D",
     links: "Link D",
     goals: "Goal D",
+    teamMembers: [
+      { name: "Grace", role: "Developer" },
+      { name: "Hannah", role: "Project Manager" },
+    ],
   },
 ];
 
@@ -55,6 +74,9 @@ const ProjectList = () => {
   const [newProjectDescription, setNewProjectDescription] = useState("");
   const [newProjectLinks, setNewProjectLinks] = useState("");
   const [newProjectGoals, setNewProjectGoals] = useState("");
+  const [newProjectTeamMembers, setNewProjectTeamMembers] = useState([
+    { name: "", role: "" },
+  ]);
   const navigate = useNavigate();
 
   // Function to handle opening the "Create New Project" dialog
@@ -70,6 +92,7 @@ const ProjectList = () => {
     setNewProjectDescription("");
     setNewProjectLinks("");
     setNewProjectGoals("");
+    setNewProjectTeamMembers([{ name: "", role: "" }]);
   };
 
   // Function to handle submitting the form
@@ -81,6 +104,7 @@ const ProjectList = () => {
         description: newProjectDescription,
         links: newProjectLinks,
         goals: newProjectGoals,
+        teamMembers: newProjectTeamMembers,
       };
       setProjects((prevProjects) => [...prevProjects, newProject]);
       handleCloseDialog(); // Close the dialog after submission
@@ -92,9 +116,28 @@ const ProjectList = () => {
   // Function to handle navigation with state
   const handleProjectClick = (project) => {
     navigate(`/project/${project.name}`, {
-      state: { project }, // Passing the project data as state (icon as string)
+      state: { project }, // Passing the project data as state
     });
   };
+
+  // Handle change in team member fields dynamically
+  const handleTeamMemberChange = (index, field, value) => {
+    const updatedMembers = [...newProjectTeamMembers];
+    updatedMembers[index][field] = value;
+    setNewProjectTeamMembers(updatedMembers);
+  };
+
+  // Add a new team member input field
+  const handleAddTeamMember = () => {
+    setNewProjectTeamMembers([
+      ...newProjectTeamMembers,
+      { name: "", role: "" },
+    ]);
+  };
+
+  // Predefined options for member names and roles
+  const memberNames = ["Alice", "Bob", "Charlie", "David", "Eve", "Frank", "Grace", "Hannah"];
+  const roles = ["Developer", "Tester", "UI Designer", "Project Manager"];
 
   return (
     <Box sx={{ padding: 2 }}>
@@ -114,7 +157,6 @@ const ProjectList = () => {
       </Button>
 
       {/* Display projects in a vertical layout */}
-
       <div className="verticalList">
         {projects.map((project, index) => (
           <Card
@@ -181,6 +223,41 @@ const ProjectList = () => {
             value={newProjectGoals}
             onChange={(e) => setNewProjectGoals(e.target.value)}
           />
+
+          {/* Team Members Section */}
+          <Typography variant="h6" gutterBottom>
+            Team Members
+          </Typography>
+          {newProjectTeamMembers.map((member, index) => (
+            <Box key={index} sx={{ marginBottom: 1 }}>
+              {/* Select for Member Name */}
+              <FormControl fullWidth margin="dense">
+                <InputLabel>Member Name</InputLabel>
+                <Select
+                  value={member.name}
+                  onChange={(e) =>
+                    handleTeamMemberChange(index, "name", e.target.value)
+                  }
+                  label="Member Name"
+                >
+                  {memberNames.map((name) => (
+                    <MenuItem key={name} value={name}>
+                      {name}
+                    </MenuItem>
+                  ))}
+                </Select>
+              </FormControl>
+
+              
+            </Box>
+          ))}
+          <Button
+            variant="outlined"
+            onClick={handleAddTeamMember}
+            sx={{ marginTop: 1 }}
+          >
+            Add Team Member
+          </Button>
         </DialogContent>
         <DialogActions>
           <Button onClick={handleCloseDialog} color="secondary">

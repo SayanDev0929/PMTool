@@ -13,10 +13,17 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import VideoCall from "./components/VideoCall";
 import Login from "./components/Login";
 import Projects from "./pages/Projects";
-import { Workspaces } from "@mui/icons-material";
+import {
+  Groups,
+  Person,
+  SafetyDivider,
+  Task,
+  Workspaces,
+} from "@mui/icons-material";
 import ProjectDetail from "./pages/ProjectDetail";
 import Departments from "./pages/workspace/Departments";
 import Users from "./pages/workspace/Users";
+import TaskPage from "./pages/workspace/TaskPage";
 
 // Updated Navigation with links
 const NAVIGATION = [
@@ -25,46 +32,39 @@ const NAVIGATION = [
     title: "Main items",
   },
   {
-    segment: "dashboard",
-    title: "Dashboard",
-    icon: <DashboardIcon />,
-    link: "/dashboard",
-  },
-  {
     segment: "projects",
     title: "Projects",
     icon: <Workspaces />,
     link: "/projects",
   },
-  {
-    kind: "divider",
-  },
-  {
-    kind: "header",
-    title: "Analytics",
-  },
-  {
-    segment: "workspace",
-    title: "Workspace (AOT Workspace)",
-    icon: <BarChartIcon />,
-    children: [
+  // {
+  //   segment: "workspace",
+  //   title: "Workspace (AOT Workspace)",
+  //   icon: <BarChartIcon />,
+  //   children: [
       {
         segment: "departments",
         title: "Departments",
-        icon: <DescriptionIcon />,
-        link: "/workspace/departments",
+        icon: <SafetyDivider />,
+        link: "/departments",
       },
       {
         segment: "users",
         title: "Users",
-        icon: <DescriptionIcon />,
-        link: "/workspace/users",
+        icon: <Person />,
+        link: "/users",
       },
-    ],
-  },
+      {
+        segment: "tasks",
+        title: "My Tasks",
+        icon: <Task />,
+        link: "/tasks",
+      },
+  //   ],
+  // },
   {
     segment: "videocall",
-    title: "Integrations",
+    title: "Start Video Call",
     icon: <LayersIcon />,
     link: "/videocall",
   },
@@ -167,10 +167,14 @@ export default function App(props) {
           <DashboardLayout>
             <PageContainer>
               <Routes>
-                <Route path="/dashboard" element={<DashboardPage />} />
+                {/* <Route path="/dashboard" element={<DashboardPage />} /> */}
                 <Route path="/projects" element={<Projects />} />
-                <Route path="/workspace/departments" element={<Departments />} />
-                <Route path="/workspace/users" element={<Users />} />
+                <Route
+                  path="/departments"
+                  element={<Departments />}
+                />
+                <Route path="/users" element={<Users />} />
+                <Route path="/tasks" element={<TaskPage />} />
                 <Route path="/videocall" element={<VideoCall />} />
                 <Route
                   path="/project/:projectName"
